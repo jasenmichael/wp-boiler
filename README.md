@@ -38,16 +38,21 @@ instalation process:
   git clone https://github.com/jasenmichael/wp-boiler [my-new-site.com]
   ```
 - create your own repo in github
-- remove original git remote, add your repo as remote
+- remove original git remote, add your repo as remote, commit and push to gh
   `cd [my-new-site.com]`
   `git remote remove origin`
-  `git remote add origin https://github.com/[your-gh-user]]/[my-new-site.com].git `
+  `git remote add origin https://github.com/[your-gh-user]]/[my-new-site.com].git`
+  `git add -A && git commit -m "chore: clone wp-boiler"`
+  `git push --set-upstream origin main`
 - configure development(local):
   `cd bedrock && composer install && cd ../`
   `cd trellis && vagrant up && vargant provision && cd ../`
   open broser to https://trellis.local
 
 - configure production(remote)
+  - config digital ocean droplet using Ubuntu 20.04lts
+  - config ssh access
+  - config domain and dns to point to digitalocean droplet.
   - edit group_vars
     - trellis/group_vars/all/users.yml
     - trellis/group_vars/all/vault.yml
@@ -55,15 +60,15 @@ instalation process:
     - trellis/group_vars/development/wordpress_sites.yml
     - trellis/group_vars/production/vault.yml
     - trellis/group_vars/production/wordpress_sites.yml
-  - create .vault_pass(in trellis dir) with only a string as encryption key, use quotes if containing special chars. add .vault_pass to .gitignore
+  - create .vault_pass(in trellis dir) with only a string as encryption key, use quotes if containing special chars. 
+  - add .vault_pass to .gitignore
   - use ansible-vault to encrypt secrets(before pushing to version control)
-    ``` cd trellis```
-    ```ansible-vault encrypt group_vars/all/vault.yml group_vars/development/vault.yml group_vars/production/vault.yml```
-    and to decrypt...
-    ```ansible-vault decrypt group_vars/all/vault.yml group_vars/development/vault.yml group_vars/production/vault.yml```
-  - config digital ocean droplet using Ubuntu 20.04lts
-  - config ssh access
-  - config domain and dns to point to digitalocean.
+    ` cd trellis`
+    `ansible-vault encrypt group_vars/all/vault.yml group_vars/development/vault.yml group_vars/production/vault.yml`
+    and to decrypt(to access vars later)
+    `ansible-vault decrypt group_vars/all/vault.yml group_vars/development/vault.yml group_vars/production/vault.yml`
+  - push changes to github(make sure encrypted vault before push!)
+    `git add -A && git commit -m "chore: setup wp-boiler && git push"`
 
 notes.....
 pip install -r requirements.txt
