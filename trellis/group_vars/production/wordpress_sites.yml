@@ -3,7 +3,7 @@
 # Define accompanying passwords/secrets in group_vars/production/vault.yml
 
 wordpress_sites:
-  example.com:
+  esits.org:
     site_hosts:
       - canonical: esits.org
         redirects:
