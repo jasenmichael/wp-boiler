@@ -70,6 +70,49 @@ instalation process:
   - push changes to github(make sure encrypted vault before push!)
     `git add -A && git commit -m "chore: setup wp-boiler && git push"`
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 notes.....
 pip install -r requirements.txt
 ansible-galaxy install -r galaxy.yml
