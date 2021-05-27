@@ -45,3 +45,8 @@ instalation process:
 
  <!-- ansible-vault encrypt group_vars/all/vault.yml group_vars/development/vault.yml group_vars/production/vault.yml  -->
  <!-- ansible-vault decrypt group_vars/all/vault.yml group_vars/development/vault.yml group_vars/production/vault.yml  -->
+
+pip install -r requirements.txt
+ansible-galaxy install -r galaxy.yml
+
+
