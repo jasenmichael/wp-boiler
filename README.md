@@ -29,12 +29,19 @@
 
 instalation process:
 - clone this repo
-- create your own repo
+  ```bash
+  git clone https://github.com/jasenmichael/wp-boiler [my-new-site.com]
+  ```
+- create your own repo in github
 - remove original git remote, add your repo as remote
+  ```cd [my-new-site.com]```
+  ```git remote remove origin```
+  ```git remote add origin https://github.com/[your-gh-user]]/[my-new-site.com].git ```
+  
 - configure development(local):
-  -  ```cd bedrock && composer install && cd ../```
-  -  ```cd trellis && vagrant up && vargant provision && cd ../```
-  -  open broser to https://trellis.local
+  ```cd bedrock && composer install && cd ../```
+  ```cd trellis && vagrant up && vargant provision && cd ../```
+  open broser to https://trellis.local
 
 - configure staging(remote)
   - to do
@@ -49,6 +56,8 @@ instalation process:
  <!-- ansible-vault encrypt group_vars/all/vault.yml group_vars/development/vault.yml group_vars/production/vault.yml  -->
  <!-- ansible-vault decrypt group_vars/all/vault.yml group_vars/development/vault.yml group_vars/production/vault.yml  -->
 
+
+notes.....
 pip install -r requirements.txt
 ansible-galaxy install -r galaxy.yml
 ansible-playbook server.yml -e env=production
