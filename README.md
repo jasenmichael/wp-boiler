@@ -1,18 +1,20 @@
 #wp-boiler
 
-## A modern development workflow Wordpress setup
+## A modern Wordpress development to production workflow boilerplate/starter
 
 ### This uses trellis and bedrock from roots.io
 ### Ansible to deploy to a Digital Ocean droplet
 
-What this does:
-it creates a Bedrock instalation of Wordpress read more here - roots.io/bedrock
+#### What is wp-boiler?
+- 
+### what does it do?
+- it creates a Bedrock instalation of Wordpress read more here - roots.io/bedrock
+- it creates a Trellis installation to run the bedrock installation in local development in a virtual machine.
+- it uses Trellis and Ansible to provision the Digital Ocean droplet, 
+- it uses version control via git and github
+- it automatically pulls updates/changes from version control to the digitalocean droplet.
 
-it creates a Trellis installation to run the bedrock instalation in local development in a virtual machine.
-
-it uses Trellis and Ansible to provision the Digital Ocean droplet, and push the Bedrock instalation there.
-
-development environment requirements/dependencies:
+#### development environment requirements/dependencies:
 - php-cli
 - composer
 - node, npm
