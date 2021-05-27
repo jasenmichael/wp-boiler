@@ -7,7 +7,7 @@
 
 #### What is wp-boiler?
 - 
-### what does it do?
+### What does it do?
 - it creates a Bedrock instalation of Wordpress roots.io/bedrock
 - it creates a Trellis installation to run the bedrock installation in local development in a virtual machine.
 - it uses Trellis and Ansible to provision the Digital Ocean droplet, 
