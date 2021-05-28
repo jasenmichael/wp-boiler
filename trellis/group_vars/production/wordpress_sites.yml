@@ -6,7 +6,7 @@ wordpress_sites:
   esits.org:
     site_hosts:
       - canonical: esits.org
-    local_path: ../site # path targeting local Bedrock site directory (relative to Ansible root)
+    local_path: ../bedrock # path targeting local Bedrock site directory (relative to Ansible root)
     repo: git@github.com:jasenmichael/wp-boiler.git # replace with your Git repo URL
     repo_subtree_path: bedrock # relative path to your Bedrock/WP directory in your repo
     branch: main
