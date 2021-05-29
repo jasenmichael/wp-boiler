@@ -1,7 +1,7 @@
 #!/bin/bash
 
 dev_host="trellis.local"
-prod_host="143.198.137.121"    #"esits.org" # probably need vm ip here
+prod_host="esits.org" # probably need vm ip here
 stag_host="staging.esits.org"
 
 DEVDIR="web/app/uploads/"
