@@ -6,6 +6,7 @@ web
 # Application
 web/app/plugins/*
 !web/app/plugins/.gitkeep
+!web/app/plugins/advanced-custom-fields-pro
 web/app/themes/*
 !web/app/themes/.gitkeep
 web/app/mu-plugins/*/
