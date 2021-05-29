@@ -1,3 +1,8 @@
+# Web folder
+web
+!web/app
+!web/wp-config.php
+
 # Application
 web/app/plugins/*
 !web/app/plugins/.gitkeep
@@ -25,3 +30,6 @@ web/.htaccess
 
 # WP-CLI
 wp-cli.local.yml
+
+# db sync
+db-backup-*.sql.gz

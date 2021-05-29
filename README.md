@@ -6,24 +6,35 @@
 
 #### This uses trellis and bedrock from roots.io
 
-##### What is wp-boiler?
+#### What is wp-boiler?
 
 -
 
-##### What does it do?
+#### What does it do?
 
 - it creates a Bedrock instalation of Wordpress roots.io/bedrock
 - it creates a Trellis installation to run the bedrock installation in local development in a virtual machine.
 - it uses Trellis and Ansible to provision the Digital Ocean droplet,
 - it uses version control via git and github
 - it automatically pulls updates/changes from version control to the digitalocean droplet.
+- can sync db and uploads from - production => development or development => production
 
-##### development environment requirements/dependencies:
+#### development environment requirements/dependencies:
 
 - php-cli
+- php-mysql
 - composer
+- wp-cli
+  ```
+    curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
+    chmod +x wp-cli.phar && sudo mv wp-cli.phar /usr/local/bin/wp
+  ```
 - node, npm
 - pip
+  ```
+    curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
+    python get-pip.py
+  ``
 - ansible
 - virtualbox
 - vagrant
@@ -31,7 +42,7 @@
 
 ---
 
-instalation process:
+#### instalation process:
 
 - clone this repo
   ```bash
@@ -44,33 +55,46 @@ instalation process:
   `git remote add origin https://github.com/[your-gh-user]]/[my-new-site.com].git`
   `git add -A && git commit -m "chore: clone wp-boiler"`
   `git push --set-upstream origin main`
-- configure development(local):
-  `cd bedrock && composer install && cd ../`
-  `cd trellis && vagrant up && vargant provision && cd ../`
-  open broser to https://trellis.local
 
-- configure production(remote)
-  - config digital ocean droplet using Ubuntu 20.04lts
-  - config ssh access
-  - config domain and dns to point to digitalocean droplet.
-  - edit group_vars
+- configure development(local) and production(remote)
+  - create digital ocean droplet
+    - config droplet using Ubuntu 20.04lts
+    - config ssh access and keys to droplet
+    - config domain and dns to point to digitalocean droplet.
+  - edit group_vars (see comments in vault.yml)
     - trellis/group_vars/all/users.yml
     - trellis/group_vars/all/vault.yml
     - trellis/group_vars/development/vault.yml
     - trellis/group_vars/development/wordpress_sites.yml
     - trellis/group_vars/production/vault.yml
     - trellis/group_vars/production/wordpress_sites.yml
-  - create .vault_pass(in trellis dir) with only a string as encryption key, use quotes if containing special chars. 
-  - add .vault_pass to .gitignore
+  - start and provision vm for local development:
+    `cd bedrock && composer install && cd ../`
+    `cd trellis && vagrant up && vargant provision && cd ../`
+    open browser to https://trellis.local
+
+now that we have our local dev environment setup, we need to secure(encrypt) our dev and production secrets before pushing to version control.
+
+  - create .vault_pass(in trellis dir) with only a string as encryption key (use quotes if containing special chars). 
+  - add .vault_pass to .gitignore (should be there by default).
   - use ansible-vault to encrypt secrets(before pushing to version control)
     ` cd trellis`
     `ansible-vault encrypt group_vars/all/vault.yml group_vars/development/vault.yml group_vars/production/vault.yml`
-    and to decrypt(to access vars later)
+    and to decrypt(ONLY if needed to access vars later)
     `ansible-vault decrypt group_vars/all/vault.yml group_vars/development/vault.yml group_vars/production/vault.yml`
   - push changes to github(make sure encrypted vault before push!)
-    `git add -A && git commit -m "chore: setup wp-boiler && git push"`
+    `git add -A && git commit -m "chore: setup wp-boiler for new site && git push"`
 
 
+#### deploy
+pip install -r requirements.txt
+ansible-galaxy install -r galaxy.yml
+ansible-playbook server.yml -e env=production
+
+install ssh stuff so ansible works
+
+create ssh key for github
+ssh-keygen -t rsa -b 4096 -C "jasen@jasenmichael.com"
 
 
 
@@ -114,42 +138,8 @@ instalation process:
 
 
 notes.....
-pip install -r requirements.txt
-ansible-galaxy install -r galaxy.yml
-ansible-playbook server.yml -e env=production
 
-install ssh stuff so ansible works
-
-create ssh key for github
-ssh-keygen -t rsa -b 4096 -C "jasen@jasenmichael.com"
-
----
-
-db stuff
-
-https://discourse.roots.io/t/database-syncing/7283/10
-
-# export production alias to local
-
-wp db export \ # backup the local database
-&& wp db reset \ # optional - create a blank slate
-&& wp @production db export - | wp db import - \ # export the production database and pipe it into our local database
-&& wp search-replace '//production-url.com' '//local-url.test' --skip-columns=guid --report-changed-only \
-&& wp cache flush
-
-# export local db to staging alias
-
-wp @staging db export \ # backup the staging database
-&& wp @staging db reset \ # optional - create a blank slate on staging
-&& wp db export - | wp @staging db import - \ # export the local database and pipe it into our staging database
-&& wp @staging search-replace '//local-url.test' '//staging-url.com' --skip-columns=guid --report-changed-only \
-&& wp @staging cache flush
-
----
-
-install
-
-node, npm in dev/prod server script
+install -- node, npm in dev/prod server script
 
 apt install curl build-essential
 curl -sL https://deb.nodesource.com/setup_lts.x | sudo -E bash -

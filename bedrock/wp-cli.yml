@@ -1,3 +1,9 @@
 path: web/wp
 server:
   docroot: web
+
+@production:
+  ssh: root@esits.org/srv/www/esits.org/current
+
+@development:
+  ssh: vagrant@trellis.local/srv/www/trellis.local/current
